@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:pinput/pinput.dart';
 
 class ValidateOtp extends StatelessWidget {
@@ -19,7 +18,7 @@ class ValidateOtp extends StatelessWidget {
               Container(
                 width: double.infinity,
                 height: double.infinity,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/images/loginbg.jpeg'),
                     fit: BoxFit.cover,
@@ -51,9 +50,10 @@ class ValidateOtp extends StatelessWidget {
                       Text(
                         'Lörem ipsum ivonar est der och ora Kelig.',
                         style: TextStyle(
-                            fontSize: isTablet ? 18 : 13,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.grey),
+                          fontSize: isTablet ? 18 : 13,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.grey,
+                        ),
                       ),
                       SizedBox(
                         height: isTablet ? 80 : 60, // More space for tablet
@@ -65,7 +65,7 @@ class ValidateOtp extends StatelessWidget {
                           fontSize: isTablet ? 20 : 16,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 6,
                       ),
                       Container(
@@ -89,7 +89,7 @@ class ValidateOtp extends StatelessWidget {
                               color: Colors.grey[300], // Background color
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            padding: EdgeInsets.symmetric(horizontal: 16),
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                           ),
                           separator: SizedBox(width: isTablet ? 16 : 8),
                         ),
@@ -100,19 +100,23 @@ class ValidateOtp extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           if (otppinController.text == '12345') {
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content: Text("PIN is Valide!"),
-                              backgroundColor: Colors.green,
-                            ));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("LOGIN SUCCESS"),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
                             print("success");
                             Navigator.of(context).pushNamed('/enterlocation');
                           } else {
                             // PIN is invalid
-                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              content:
-                                  Text('Please enter a valid 5-digit PIN.'),
-                              backgroundColor: Colors.red,
-                            ));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text('Please enter a valid 5-digit PIN.'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
                           }
                         },
                         child: Container(
@@ -135,7 +139,7 @@ class ValidateOtp extends StatelessWidget {
                                         : 16, // Larger font for tablet
                                   ),
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.arrow_forward,
                                   color: Colors.white,
                                 ),
@@ -144,14 +148,14 @@ class ValidateOtp extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       InkWell(
                         onTap: () {
                           print("resend otp");
                         },
-                        child: Text(
+                        child: const Text(
                           "Resend OTP",
                           style: TextStyle(
                             color: Colors.grey,

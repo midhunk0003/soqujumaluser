@@ -35,7 +35,9 @@ dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.2.3
   http: ^0.13.6
-  carousel_slider: ^4.1.1
+  carousel_slider: ^5.0.0
+  lottie: ^2.7.0
+  permission_handler: ^10.4.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -70,6 +72,26 @@ flutter:
     - assets/images/onbord3.jpeg
     - assets/images/loginbg.jpeg
     - assets/images/logo.png
+    - assets/images/notificationicon.png
+    - assets/images/circum_search.png
+    - assets/images/homecursoul.png
+    - assets/images/iconimage/cartblack.png
+    - assets/images/iconimage/cartnoblack.png
+    - assets/images/iconimage/heartblack.png
+    - assets/images/iconimage/heartnoblack.png
+    - assets/images/iconimage/homeicon.png
+    - assets/images/iconimage/userblack.png
+    - assets/images/iconimage/usernoblack.png
+    - assets/images/iconimage/homelineblack.png
+    - assets/images/vegitables.png
+    - assets/images/iconimage/deletehideandshow.png
+    - assets/images/iconimage/remove.png
+    - assets/json/successordered.json
+    - assets/images/iconimage/ri_direction-fill.png
+    - assets/images/iconimage/mail.png
+    - assets/images/iconimage/phonecontact.png
+    - assets/images/iconimage/whatsapp.png
+    - assets/images/Rectangle 638.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

@@ -9,24 +9,27 @@ class Selectstorescreen extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            Icon(
+            const Icon(
               Icons.location_pin,
               color: Colors.green,
             ),
             const SizedBox(
               width: 4,
             ),
-            Text("Location name"),
+            const Text("Location name"),
             const SizedBox(
               width: 20,
             ),
             TextButton(
               onPressed: () {
                 Navigator.pushNamedAndRemoveUntil(
-                    context, '/enterlocation', (route) => false);
+                  context,
+                  '/enterlocation',
+                  (route) => false,
+                );
               },
-              child: Text('change location'),
-            )
+              child: const Text('change location'),
+            ),
           ],
         ),
       ),
@@ -52,12 +55,19 @@ class Selectstorescreen extends StatelessWidget {
                   Expanded(
                     child: Container(
                       child: ListView.separated(
-                          separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(height: 20); // Space between items
-                          },
-                          itemCount: 10,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(
+                            height: 20,
+                          ); // Space between items
+                        },
+                        itemCount: 10,
+                        itemBuilder: (BuildContext context, int index) {
+                          return InkWell(
+                            onTap: () {
+                              print("$index");
+                              Navigator.pushNamed(context, '/bottomnavbar');
+                            },
+                            child: Container(
                               height: isTablet ? 100 : 80,
                               decoration: BoxDecoration(
                                 // color: Colors.yellow,
@@ -76,12 +86,13 @@ class Selectstorescreen extends StatelessWidget {
                                     Container(
                                       height: isTablet ? 50 : 35,
                                       width: isTablet ? 90 : 65,
-                                      decoration: BoxDecoration(
-                                        color: const Color.fromARGB(
-                                            255, 255, 255, 255),
+                                      decoration: const BoxDecoration(
+                                        // color: const Color.fromARGB(
+                                        //     255, 255, 255, 255),
                                         image: DecorationImage(
                                           image: AssetImage(
-                                              'assets/images/logo.png'),
+                                            'assets/images/logo.png',
+                                          ),
                                           fit: BoxFit.cover,
                                         ),
                                       ),
@@ -99,18 +110,22 @@ class Selectstorescreen extends StatelessWidget {
                                     const SizedBox(
                                       width: 23,
                                     ),
-                                    Icon(
-                                      Icons.arrow_forward,
-                                      color: Colors.green,
-                                      size: isTablet ? 36 : 30,
-                                    )
+                                    Flexible(
+                                      child: Icon(
+                                        Icons.arrow_forward_ios,
+                                        color: Colors.green,
+                                        size: isTablet ? 36 : 30,
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
-                            );
-                          }),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
             );

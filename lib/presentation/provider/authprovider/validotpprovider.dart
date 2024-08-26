@@ -1,13 +1,3 @@
-
-
-
-
-
 import 'package:flutter/material.dart';
 
-class  ValidateOtpProvider extends ChangeNotifier{
-
-
-
-
-}
+class ValidateOtpProvider extends ChangeNotifier {}

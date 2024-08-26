@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class Loginphonenumber extends StatelessWidget {
   Loginphonenumber({Key? key}) : super(key: key);
@@ -16,21 +15,23 @@ class Loginphonenumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    countryController.text = "+91";
     return Scaffold(
+      // resizeToAvoidBottomInset: false,
       body: LayoutBuilder(
         builder: (context, constraints) {
           bool isTablet = constraints.maxWidth > 600;
           return Stack(
             alignment: Alignment.center,
             children: [
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/images/loginbg.jpeg'),
-                    fit: BoxFit.cover,
+              Positioned.fill(
+                child: Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/loginbg.jpeg'),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -59,9 +60,10 @@ class Loginphonenumber extends StatelessWidget {
                       Text(
                         'Lörem ipsum ivonar est der och ora Kelig.',
                         style: TextStyle(
-                            fontSize: isTablet ? 18 : 13,
-                            fontWeight: FontWeight.w300,
-                            color: Colors.grey),
+                          fontSize: isTablet ? 18 : 13,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.grey,
+                        ),
                       ),
                       SizedBox(
                         height: isTablet ? 80 : 60, // More space for tablet
@@ -73,7 +75,7 @@ class Loginphonenumber extends StatelessWidget {
                           fontSize: isTablet ? 20 : 16,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 6,
                       ),
                       Form(
@@ -87,7 +89,7 @@ class Loginphonenumber extends StatelessWidget {
                           ),
                           child: Row(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               SizedBox(
@@ -109,23 +111,24 @@ class Loginphonenumber extends StatelessWidget {
                                     selectedCountryCode = newValue!;
                                     print(selectedCountryCode);
                                   },
-                                  underline: SizedBox(),
+                                  underline: const SizedBox(),
                                 ),
                               ),
                               Text(
                                 "|",
                                 style: TextStyle(
-                                    fontSize: isTablet ? 36 : 33,
-                                    color: Colors.grey),
+                                  fontSize: isTablet ? 36 : 33,
+                                  color: Colors.grey,
+                                ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Expanded(
                                 child: TextFormField(
                                   controller: numberController,
                                   keyboardType: TextInputType.phone,
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     hintText: "Phone",
                                   ),
@@ -135,7 +138,7 @@ class Loginphonenumber extends StatelessWidget {
                                         : 16, // Larger font for tablet
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -145,13 +148,21 @@ class Loginphonenumber extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          if (numberController.text.isEmpty ||
-                              countryController.text.isEmpty) {
+                          print('$countryController');
+                          if (selectedCountryCode!.isEmpty ||
+                              numberController.text.isEmpty) {
+                            print(
+                              'show data : $selectedCountryCode${numberController.text}',
+                            );
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text('Please enter your phone number'),
-                                backgroundColor: Color.fromARGB(255, 212, 23,
-                                    9), // Optional: Set background color
+                                backgroundColor: Color.fromARGB(
+                                  255,
+                                  212,
+                                  23,
+                                  9,
+                                ), // Optional: Set background color
                                 duration: Duration(
                                   seconds: 2,
                                 ), // Optional: Set duration
@@ -159,7 +170,8 @@ class Loginphonenumber extends StatelessWidget {
                             );
                           } else {
                             print(
-                                '${selectedCountryCode}${numberController.text}');
+                              '$selectedCountryCode${numberController.text}',
+                            );
                             Navigator.pushNamed(context, '/verifyOtp');
                           }
                         },
@@ -183,7 +195,7 @@ class Loginphonenumber extends StatelessWidget {
                                         : 16, // Larger font for tablet
                                   ),
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.arrow_forward,
                                   color: Colors.white,
                                 ),
