@@ -6,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class Cartscreen extends StatefulWidget {
-  const Cartscreen({Key? key}) : super(key: key);
+  final int? storeId;
+  const Cartscreen({Key? key, required this.storeId}) : super(key: key);
 
   @override
   State<Cartscreen> createState() => _CartscreenState();
@@ -229,7 +230,7 @@ class _CartscreenState extends State<Cartscreen> {
                                   //edit text
                                   TextButton(
                                     onPressed: () {
-                                      showscrollingBottomsheet(context, index);
+                                      // showscrollingBottomsheet(context, index,widget.storeId,);
                                     },
                                     child: Text(
                                       "EDIT",

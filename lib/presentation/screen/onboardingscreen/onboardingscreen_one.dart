@@ -129,10 +129,18 @@ class OnboardingscreenOne extends StatelessWidget {
                                   if (onboardingProvider.currentIndex ==
                                       onboardingProvider.onboardingData.length -
                                           1) {
-                                    Navigator.pushNamed(
+                                    Navigator.pushNamedAndRemoveUntil(
                                       context,
                                       '/loginphonenumber',
+                                      (route) => false,
                                     );
+                                    // if (context.mounted) {
+                                    //   Navigator.of(context)
+                                    //       .pushNamedAndRemoveUntil(
+                                    //     '/loginphonenumber',
+                                    //     (route) => false,
+                                    //   );
+                                    // }
                                   } else {
                                     onboardingProvider.nextPage();
                                   }

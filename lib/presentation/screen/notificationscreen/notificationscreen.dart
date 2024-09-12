@@ -10,13 +10,15 @@ class Notificationscreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-          title: Image(
-            width: 92,
-            image: AssetImage(
-              'assets/images/logo.png',
-            ),
+        title: Image(
+          width: 92,
+          image: AssetImage(
+            'assets/images/logo.png',
           ),
-          automaticallyImplyLeading1: true),
+        ),
+        // actions: false,
+        automaticallyImplyLeading1: true,
+      ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           bool isTablet = constraints.maxWidth > 600;

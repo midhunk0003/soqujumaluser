@@ -1,4 +1,7 @@
+import 'package:customersouqjumla/presentation/provider/authprovider/loginprovider.dart';
+import 'package:customersouqjumla/presentation/widgets/snakebar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Loginphonenumber extends StatelessWidget {
   Loginphonenumber({Key? key}) : super(key: key);
@@ -15,6 +18,7 @@ class Loginphonenumber extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final provider = Provider.of<LoginProvider>(context, listen: false);
     return Scaffold(
       // resizeToAvoidBottomInset: false,
       body: LayoutBuilder(
@@ -146,63 +150,87 @@ class Loginphonenumber extends StatelessWidget {
                       SizedBox(
                         height: isTablet ? 70 : 50,
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          print('$countryController');
-                          if (selectedCountryCode!.isEmpty ||
-                              numberController.text.isEmpty) {
-                            print(
-                              'show data : $selectedCountryCode${numberController.text}',
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please enter your phone number'),
-                                backgroundColor: Color.fromARGB(
-                                  255,
-                                  212,
-                                  23,
-                                  9,
-                                ), // Optional: Set background color
-                                duration: Duration(
-                                  seconds: 2,
-                                ), // Optional: Set duration
+                      Consumer<LoginProvider>(
+                        builder: (context, loginprovider, child) {
+                          return GestureDetector(
+                            onTap: () async {
+                              print('$countryController');
+                              if (selectedCountryCode!.isEmpty ||
+                                  numberController.text.isEmpty) {
+                                print(
+                                  'show data : $selectedCountryCode${numberController.text}',
+                                );
+                                showsnakebarfunc(
+                                  context,
+                                  "please enter your phone number",
+                                  Color.fromARGB(139, 212, 22, 9),
+                                );
+                              } else {
+                                final phone = selectedCountryCode! +
+                                    numberController.text;
+                                await loginprovider.loginWithphonenumber(
+                                    phone, 'ascd');
+                                print(
+                                  '$selectedCountryCode${numberController.text}',
+                                );
+                                if (loginprovider.errormessage != null) {
+                                  print('ui error');
+                                  showsnakebarfunc(
+                                    context,
+                                    '${loginprovider.errormessage!}',
+                                    Color.fromARGB(139, 212, 22, 9),
+                                  );
+                                } else if (loginprovider.loginResponse !=
+                                    null) {
+                                  showsnakebarfunc(
+                                    context,
+                                    'Login successful!',
+                                    Color.fromARGB(138, 9, 212, 43),
+                                  );
+
+                                  Navigator.pushNamedAndRemoveUntil(
+                                    context,
+                                    '/enterlocation',
+                                    (route) => false,
+                                  );
+                                }
+                              }
+                            },
+                            child: Container(
+                              height: isTablet ? 60 : 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: loginprovider.isloading
+                                    ? Colors.grey
+                                    : Colors.green,
                               ),
-                            );
-                          } else {
-                            print(
-                              '$selectedCountryCode${numberController.text}',
-                            );
-                            Navigator.pushNamed(context, '/verifyOtp');
-                          }
-                        },
-                        child: Container(
-                          height: isTablet ? 60 : 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.green,
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  "Get OTP",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: isTablet
-                                        ? 20
-                                        : 16, // Larger font for tablet
-                                  ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      loginprovider.isloading
+                                          ? "Loading...."
+                                          : "Get OTP",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: isTablet
+                                            ? 20
+                                            : 16, // Larger font for tablet
+                                      ),
+                                    ),
+                                    const Icon(
+                                      Icons.arrow_forward,
+                                      color: Colors.white,
+                                    ),
+                                  ],
                                 ),
-                                const Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.white,
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ],
                   ),

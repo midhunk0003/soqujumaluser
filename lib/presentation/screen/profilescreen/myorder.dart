@@ -98,12 +98,6 @@ class Myorder extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    // VerticalDivider(
-                                    //   color: Colors.grey,
-                                    //   thickness: 2,
-                                    //   width:
-                                    //       20, // Space between the divider and the widgets
-                                    // ),
                                     Expanded(
                                       child: Container(
                                         // color: Colors.green,

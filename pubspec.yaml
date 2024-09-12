@@ -38,14 +38,22 @@ dependencies:
   carousel_slider: ^5.0.0
   lottie: ^2.7.0
   permission_handler: ^10.4.5
+  dartz: ^0.10.0
+  get_it: ^7.7.0
+  injectable: ^2.4.4
+  shimmer: ^2.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  json_serializable: ^6.8.0
+  json_annotation: ^4.9.0
+  build_runner: ^2.4.12
   flutter_test:
     sdk: flutter
+  injectable_generator: ^2.6.2
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -92,6 +100,9 @@ flutter:
     - assets/images/iconimage/phonecontact.png
     - assets/images/iconimage/whatsapp.png
     - assets/images/Rectangle 638.png
+    - assets/json/loadingcircle.json
+    - assets/json/empty.json
+    - assets/images/likedimage.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

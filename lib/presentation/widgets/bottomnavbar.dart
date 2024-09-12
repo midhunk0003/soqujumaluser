@@ -1,13 +1,18 @@
+import 'package:customersouqjumla/data/model/liked_product_model/liked_product_model.dart';
+import 'package:customersouqjumla/presentation/provider/likedproductprovider/likedproductprovider.dart';
 import 'package:customersouqjumla/presentation/screen/cartscreen/cartscreen.dart';
 import 'package:customersouqjumla/presentation/screen/homescreen/homescreen.dart';
 import 'package:customersouqjumla/presentation/screen/likedscreen/likedscreen.dart';
 import 'package:customersouqjumla/presentation/screen/profilescreen/profilescreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Bottomnavbar extends StatefulWidget {
   // final int initalIndex;
+  final int? storeId;
   const Bottomnavbar({
     Key? key,
+    required this.storeId,
   }) : super(key: key);
 
   @override
@@ -18,10 +23,27 @@ class _BottomnavbarState extends State<Bottomnavbar> {
   int _selectedIndex = 0;
   PageController _pageController = PageController();
 
+  late List<Widget> _widgetoption;
+
+  // List<Widget> _widgetoption = [];
+
   @override
   void initState() {
     // TODO: implement initState
     // _selectedIndex = 2;
+    // _widgetoption = stringList.map((string) => Text(string)).toList();
+    _widgetoption = [
+      Homescreen(
+        storeId: widget.storeId,
+      ),
+      Likedscreen(
+         storeId: widget.storeId,
+      ),
+      Cartscreen(
+         storeId: widget.storeId,
+      ),
+      Profilescreen(),
+    ];
     _pageController = PageController(initialPage: _selectedIndex);
     super.initState();
   }
@@ -37,13 +59,6 @@ class _BottomnavbarState extends State<Bottomnavbar> {
     );
     print(index);
   }
-
-  final List<Widget> _widgetoption = [
-    Homescreen(),
-    Likedscreen(),
-    Cartscreen(),
-    Profilescreen(),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +137,7 @@ class AnimatedBottomNavBar extends StatelessWidget {
               imageAssetnoline: 'assets/images/iconimage/homeicon.png',
               imageAssetblackline: 'assets/images/iconimage/homelineblack.png',
               title: 'Home',
-              indexxxxx: 0,
+              likedcount: 0,
               isSelected: selectedIndex == 0,
               onTap: () => onItemTapped(0),
               isTablet: isTablet,
@@ -131,7 +146,7 @@ class AnimatedBottomNavBar extends StatelessWidget {
               imageAssetnoline: 'assets/images/iconimage/heartnoblack.png',
               imageAssetblackline: 'assets/images/iconimage/heartblack.png',
               title: 'Liked',
-              indexxxxx: 1,
+              likedcount: 1,
               isSelected: selectedIndex == 1,
               onTap: () => onItemTapped(1),
               isTablet: isTablet,
@@ -140,7 +155,7 @@ class AnimatedBottomNavBar extends StatelessWidget {
               imageAssetnoline: 'assets/images/iconimage/cartnoblack.png',
               imageAssetblackline: 'assets/images/iconimage/cartblack.png',
               title: 'Cart',
-              indexxxxx: 2,
+              likedcount: 2,
               isSelected: selectedIndex == 2,
               onTap: () => onItemTapped(2),
               isTablet: isTablet,
@@ -149,7 +164,7 @@ class AnimatedBottomNavBar extends StatelessWidget {
               imageAssetnoline: 'assets/images/iconimage/usernoblack.png',
               imageAssetblackline: 'assets/images/iconimage/userblack.png',
               title: 'Profile',
-              indexxxxx: 3,
+              likedcount: 3,
               isSelected: selectedIndex == 3,
               onTap: () => onItemTapped(3),
               isTablet: isTablet,
@@ -163,7 +178,7 @@ class AnimatedBottomNavBar extends StatelessWidget {
 
 class CustomNavDestination extends StatelessWidget {
   final String title;
-  final int indexxxxx;
+  final int likedcount;
   final String imageAssetnoline;
   final String imageAssetblackline;
   final bool isSelected;
@@ -174,7 +189,7 @@ class CustomNavDestination extends StatelessWidget {
     required this.imageAssetnoline,
     required this.imageAssetblackline,
     required this.title,
-    required this.indexxxxx,
+    required this.likedcount,
     required this.isSelected,
     required this.onTap,
     required this.isTablet,
@@ -227,25 +242,35 @@ class CustomNavDestination extends StatelessWidget {
               ],
             ),
           ),
-          if (indexxxxx == cerindex || indexxxxx == cerindex2)
-            Positioned(
-              right: isSelected ? 12 : 0,
-              left: isSelected ? 0 : 25,
-              bottom: isSelected ? 20 : 20,
-              child: (1 == 1)
-                  ? const CircleAvatar(
+          Consumer<Likedproductprovider>(
+            builder: (context, likedProvider, child) {
+              final likedlength = likedProvider.likedProductList ?? [];
+              if (likedlength.isNotEmpty) {
+                if (likedcount == cerindex) {
+                  return Positioned(
+                    right: isSelected ? 12 : 0,
+                    left: isSelected ? 0 : 25,
+                    bottom: isSelected ? 20 : 20,
+                    child: CircleAvatar(
                       backgroundColor: Colors.red,
                       radius: 8,
                       child: Center(
                         child: Text(
-                          '2',
+                          '${likedlength.length}',
                           style: TextStyle(color: Colors.white, fontSize: 9),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    )
-                  : Container(),
-            ),
+                    ),
+                  );
+                } else {
+                  return SizedBox();
+                }
+              } else {
+                return SizedBox();
+              }
+            },
+          )
         ],
       ),
     );

@@ -167,7 +167,7 @@ class Ordersummary extends StatelessWidget {
                           Column(
                             children: [
                               Container(
-                                color: const Color.fromARGB(255, 15, 153, 163),
+                                color: const Color.fromARGB(85, 17, 220, 235),
                                 child: Table(
                                   columnWidths: {
                                     0: FixedColumnWidth(
@@ -195,33 +195,29 @@ class Ordersummary extends StatelessWidget {
                                   children: [
                                     TableRow(
                                       children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Item',
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      isTablet ? 40 : 20.0),
-                                            )
-                                          ],
+                                        Center(
+                                          child: Text(
+                                            'Items',
+                                            style: TextStyle(
+                                                // fontSize: isTablet ? 40 : 20.0,
+                                                ),
+                                          ),
                                         ),
-                                        Column(
-                                          children: [
-                                            Text('Qty',
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        isTablet ? 40 : 20.0))
-                                          ],
+                                        Center(
+                                          child: Text(
+                                            'Qty',
+                                            style: TextStyle(
+                                                // fontSize: isTablet ? 40 : 20.0,
+                                                ),
+                                          ),
                                         ),
-                                        Column(
-                                          children: [
-                                            Text('Amount',
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        isTablet ? 40 : 20.0))
-                                          ],
+                                        Center(
+                                          child: Text(
+                                            'Amount',
+                                            style: TextStyle(
+                                                // fontSize: isTablet ? 40 : 20.0,
+                                                ),
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -267,11 +263,13 @@ class Ordersummary extends StatelessWidget {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.all(8.0),
-                                                  child: Text('Apple',
-                                                      style: TextStyle(
-                                                          fontSize: isTablet
-                                                              ? 26
-                                                              : 13.0)),
+                                                  child: Text(
+                                                    'Apple',
+                                                    style: TextStyle(
+                                                        fontSize: isTablet
+                                                            ? 26
+                                                            : 13.0),
+                                                  ),
                                                 )
                                               ]),
                                           Column(children: [
@@ -290,11 +288,13 @@ class Ordersummary extends StatelessWidget {
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: Text('AED 50.75',
-                                                    style: TextStyle(
-                                                        fontSize: isTablet
-                                                            ? 26
-                                                            : 13.0)),
+                                                child: Text(
+                                                  'AED 50.75',
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                        isTablet ? 26 : 13.0,
+                                                  ),
+                                                ),
                                               )
                                             ],
                                           ),
@@ -308,131 +308,63 @@ class Ordersummary extends StatelessWidget {
                               //total table
 
                               Container(
-                                color: const Color.fromARGB(255, 15, 153, 163),
-                                child: Table(
-                                  // defaultColumnWidth: FixedColumnWidth(120.0),
-                                  border: TableBorder(),
-                                  children: [
-                                    TableRow(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                'Total Expenses',
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        isTablet ? 24 : 16.0),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          width: 30,
-                                        ),
-                                        Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text('AED 261',
-                                                  style: TextStyle(
-                                                      fontSize: isTablet
-                                                          ? 24
-                                                          : 16.0)),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    TableRow(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                'Total Discounts',
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        isTablet ? 24 : 16.0),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          width: 30,
-                                        ),
-                                        Column(
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text('AED 61',
-                                                  style: TextStyle(
-                                                      fontSize: isTablet
-                                                          ? 28
-                                                          : 16.0)),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                color: const Color.fromARGB(85, 17, 220, 235),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Total Expenses"),
+                                          Text("AED 50.75"),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text("Total Expenses"),
+                                          Text("AED 50.75"),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                              ),
+                              SizedBox(
+                                height: 13,
                               ),
 
                               ///grand total
                               Divider(),
 
-                              Table(
-                                columnWidths: {
-                                  0: FixedColumnWidth(
-                                    147.0,
-                                  ), // Adjust the width of the first column
-                                },
-                                // defaultColumnWidth: FixedColumnWidth(120.0),
-                                border: TableBorder(),
-                                children: [
-                                  TableRow(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              'Grand Total',
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      isTablet ? 24 : 16.0,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        width: 30,
-                                      ),
-                                      Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text('AED 200',
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        isTablet ? 24 : 16.0,
-                                                    fontWeight:
-                                                        FontWeight.w600)),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                              SizedBox(
+                                height: 13,
                               ),
+
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Grand Total",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    "AED 200",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                ],
+                              )
                             ],
                           )
                         ],

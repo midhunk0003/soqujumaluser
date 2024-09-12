@@ -1,15 +1,26 @@
+import 'package:customersouqjumla/domain/dependence_injection/injectable.dart';
+import 'package:customersouqjumla/presentation/provider/authprovider/loginprovider.dart';
+import 'package:customersouqjumla/presentation/provider/cartprovider/cart_provider.dart';
+import 'package:customersouqjumla/presentation/provider/enterlocationprovider/enterlocationsprovider.dart';
 import 'package:customersouqjumla/presentation/provider/helpandsupportprovider/faqprovider.dart';
 import 'package:customersouqjumla/presentation/provider/homeprovider/bottomsheet_qty_change_provider.dart';
+import 'package:customersouqjumla/presentation/provider/homeprovider/category_by_product_provider.dart';
+import 'package:customersouqjumla/presentation/provider/homeprovider/category_provider.dart';
 import 'package:customersouqjumla/presentation/provider/homeprovider/homeccarouselprovider.dart';
+import 'package:customersouqjumla/presentation/provider/likedproductprovider/likedproductprovider.dart';
+import 'package:customersouqjumla/presentation/provider/notificationprovider/notificationchangiconprovider.dart';
 import 'package:customersouqjumla/presentation/provider/onboardprovider/onboardprovider.dart';
+import 'package:customersouqjumla/presentation/provider/selectstoreprovider/selectstoreprovider.dart';
 import 'package:customersouqjumla/presentation/screen/authscreen/loginphonenumber.dart';
 import 'package:customersouqjumla/presentation/screen/authscreen/validateotp.dart';
 import 'package:customersouqjumla/presentation/screen/cartscreen/addresscart.dart';
+import 'package:customersouqjumla/presentation/screen/cartscreen/cartscreen.dart';
 import 'package:customersouqjumla/presentation/screen/enterlocationscreen/enterlocationscreen.dart';
 import 'package:customersouqjumla/presentation/screen/homescreen/homescreen.dart';
 import 'package:customersouqjumla/presentation/screen/homescreen/homesubcategory.dart';
 import 'package:customersouqjumla/presentation/screen/homescreen/widgets/tracker_ruler_widget_items.dart';
 import 'package:customersouqjumla/presentation/screen/homescreen/widgets/trackers_ruler_widget.dart';
+import 'package:customersouqjumla/presentation/screen/likedscreen/likedscreen.dart';
 import 'package:customersouqjumla/presentation/screen/notificationscreen/notificationscreen.dart';
 import 'package:customersouqjumla/presentation/screen/onboardingscreen/onboardingscreen_one.dart';
 import 'package:customersouqjumla/presentation/screen/profilescreen/aboutus.dart';
@@ -19,32 +30,37 @@ import 'package:customersouqjumla/presentation/screen/profilescreen/helpandsuppo
 import 'package:customersouqjumla/presentation/screen/profilescreen/myorder.dart';
 import 'package:customersouqjumla/presentation/screen/profilescreen/ordersummary.dart';
 import 'package:customersouqjumla/presentation/screen/profilescreen/personaldetails.dart';
+import 'package:customersouqjumla/presentation/screen/profilescreen/profilescreen.dart';
 import 'package:customersouqjumla/presentation/screen/profilescreen/registerandcomplaints.dart';
 import 'package:customersouqjumla/presentation/screen/selectstorescreen/selectstorescreen.dart';
 import 'package:customersouqjumla/presentation/widgets/bottomnavbar.dart';
+import 'package:customersouqjumla/presentation/widgets/ruler_picker_custom.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await configurationInjection();
+  final prefs = await SharedPreferences.getInstance();
+  prefs.clear();
+  final String? loginToken = prefs.getString('auth_token');
+  print('Login Token: $loginToken');
   runApp(
     DevicePreview(
-      builder: (context) {
-        return const MyApp();
-      },
-    ),
+        builder: (context) => MyApp(
+              initialRoute: loginToken != null ? '/enterlocation' : '/',
+            )),
+    // const MyApp(),
   );
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  num selectedValue = 0;
+class MyApp extends StatelessWidget {
+  final String? initialRoute;
+  const MyApp({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
@@ -54,114 +70,139 @@ class _MyAppState extends State<MyApp> {
           create: (_) => OnboardingProvider(),
         ),
         ChangeNotifierProvider(
-          create: (_) => CarouselProvider(),
+          create: (_) => getIt<CarouselProvider>(),
         ),
         ChangeNotifierProvider(
           create: (_) => BottomSheetQtyProvider(),
         ),
         ChangeNotifierProvider(
           create: (_) => FaqProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Notificationchangiconprovider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => getIt<LoginProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => getIt<Enterlocationsprovider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => getIt<Selectstoreprovider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => getIt<CategoryProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => getIt<CategoryByProductProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => getIt<Likedproductprovider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => getIt<CartProvider>(),
         )
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'customersouqjumla',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        // home: OnboardingscreenOne(),
-        // home: Loginphonenumber(),
-        initialRoute: '/',
+        initialRoute: initialRoute,
         onGenerateRoute: (settings) {
           switch (settings.name) {
             case '/':
-              return _createRoute(const OnboardingscreenOne());
+              return _createRoute(
+                const OnboardingscreenOne(),
+              );
 
-            // MaterialPageRoute(
-            //   builder: (context) => const OnboardingscreenOne(),
-            // );
             case '/loginphonenumber':
-              return _createRoute(Loginphonenumber());
-            // MaterialPageRoute(
-            //   builder: (context) => Loginphonenumber(),
-            // );
-            case '/verifyOtp':
-              return _createRoute(ValidateOtp());
-            // MaterialPageRoute(
-            //   builder: (context) => ValidateOtp(),
-            // );
-            case '/enterlocation':
-              return _createRoute(Enterlocationscreen());
-            // MaterialPageRoute(
-            //   builder: (context) => Enterlocationscreen(),
-            // );
-            case '/selectstorescreen':
-              return _createRoute(Selectstorescreen());
-            // MaterialPageRoute(
-            //   builder: (context) => const Selectstorescreen(),
-            // );
+              return _createRoute(
+                Loginphonenumber(),
+              );
 
-            case '/homescreen':
-              return _createRoute(Homescreen());
-            // MaterialPageRoute(
-            //   builder: (context) => Homescreen(),
-            // );
+            case '/verifyOtp':
+              return _createRoute(
+                ValidateOtp(),
+              );
+
+            case '/enterlocation':
+              return _createRoute(
+                Enterlocationscreen(),
+                // RulerPickerScreen(),
+              );
+
+            case '/selectstorescreen':
+              return _createRoute(
+                Selectstorescreen(),
+              );
             case '/bottomnavbar':
-              return _createRoute(Bottomnavbar());
-            // MaterialPageRoute(
-            //   builder: (context) => const Bottomnavbar(),
-            // );
+              final argus = settings.arguments as Map<String, dynamic>;
+              final int? storeId = argus['storeId'];
+              print("inside the route : $storeId");
+              return _createRoute(
+                Bottomnavbar(
+                  storeId: storeId,
+                ),
+              );
+
             case '/Homesubcategory':
-              return _createRoute(Homesubcategory());
-            // MaterialPageRoute(
-            //   builder: (context) => const Homesubcategory(),
-            // );
+              final argus = settings.arguments as Map<String, dynamic>;
+              final int? storeId = argus['storeid'];
+              final int? categoryId = argus['categotyid'];
+              print("inside the route : $storeId");
+              print("inside the route : $categoryId");
+              return _createRoute(
+                Homesubcategory(
+                  storeId: storeId,
+                  categoryId: categoryId,
+                ),
+              );
+
             case '/AddressCart':
-              return _createRoute(Addresscart());
-            // MaterialPageRoute(
-            //   builder: (context) => Addresscart(),
-            // );
+              return _createRoute(
+                Addresscart(),
+              );
+
             case '/personaldetails':
-              return _createRoute(Personaldetails());
-            // MaterialPageRoute(
-            //   builder: (context) => Personaldetails(),
-            // );
+              return _createRoute(
+                Personaldetails(),
+              );
+
             case '/myorders':
-              return _createRoute(Myorder());
-            // MaterialPageRoute(
-            //   builder: (context) => Myorder(),
-            // );
+              return _createRoute(
+                Myorder(),
+              );
+
             case '/ordersummary':
-              return _createRoute(Ordersummary());
-            // MaterialPageRoute(
-            //   builder: (context) => Ordersummary(),
-            // );
+              return _createRoute(
+                Ordersummary(),
+              );
+
             case '/aboutus':
-              return _createRoute(Aboutus());
-            // MaterialPageRoute(
-            //   builder: (context) => Aboutus(),
-            // );
+              return _createRoute(
+                Aboutus(),
+              );
+
             case '/helpandsupport':
-              return _createRoute(Helpandsupport());
-            // MaterialPageRoute(
-            //   builder: (context) => Helpandsupport(),
-            // );
+              return _createRoute(
+                Helpandsupport(),
+              );
+
             case '/contact':
               return _createRoute(Contact());
-            // MaterialPageRoute(
-            //   builder: (context) => Contact(),
-            // );
+
             case '/Registerandcomplaints':
               return _createRoute(Registerandcomplaints());
-            // MaterialPageRoute(
-            //   builder: (context) => Registerandcomplaints(),
-            // );
+
             case '/faqs':
-              return _createRoute(Faqs());
-            // MaterialPageRoute(
-            //   builder: (context) => Faqs(),
-            // );
+              return _createRoute(
+                Faqs(),
+              );
+
             case '/notification':
               return _createRoute(
                 Notificationscreen(),
@@ -185,7 +226,9 @@ Route _createRoute(Widget page) {
       const end = Offset.zero;
       const curve = Curves.ease;
 
-      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      var tween = Tween(begin: begin, end: end).chain(
+        CurveTween(curve: curve),
+      );
       var offsetAnimation = animation.drive(tween);
 
       return FadeTransition(

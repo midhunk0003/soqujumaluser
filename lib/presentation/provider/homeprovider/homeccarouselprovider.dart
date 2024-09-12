@@ -1,36 +1,57 @@
+import 'package:customersouqjumla/data/model/banner_image_model/banner_image_model.dart';
 import 'package:customersouqjumla/data/model/homecaroselmodel.dart';
+import 'package:customersouqjumla/domain/repositories/banner_image_repositories.dart';
 import 'package:flutter/material.dart';
+import 'package:injectable/injectable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+@injectable
 class CarouselProvider extends ChangeNotifier {
-  int _currentIndex = 0;
-  final CarouselController _carouselController = CarouselController();
-  final List<CarouselModel> _carouseldatas = [
-    CarouselModel(
-      image: "assets/images/homecursoul.png",
-      subtitle: "Explore Our Array of Fresh\nand Colorful Vegetables22222",
-      title:
-          "Unlock Exclusive Deals! Enjoy\na Minimum 10% Discount on\nVegetable Purchases.2222",
-    ),
-    CarouselModel(
-      image: "assets/images/homecursoul.png",
-      subtitle: "Explore Our Array of Fresh\nand Colorful Vegetables3333",
-      title:
-          "Unlock Exclusive Deals! Enjoy\na Minimum 10% Discount on\nVegetable Purchases.33333",
-    ),
-    CarouselModel(
-      image: "assets/images/homecursoul.png",
-      subtitle: "Explore Our Array of Fresh\nand Colorful Vegetables4444",
-      title:
-          "Unlock Exclusive Deals! Enjoy\na Minimum 10% Discount on\nVegetable Purchases.44444",
-    ),
-  ];
+  final BannerImageRepositories bannerImageRepositories;
 
-  List<CarouselModel> get carouseldata => _carouseldatas;
+  CarouselProvider({required this.bannerImageRepositories});
+
+  bool _isLoading = false;
+  String? _errorMessage = null;
+
+  int _currentIndex = 0;
+  CarouselController _carouselController = CarouselController();
+  List<TypeBannerList> _bannercarouseldatas = [];
+
+  List<TypeBannerList> get bannercarouseldatas => _bannercarouseldatas;
   int get currentIndex => _currentIndex;
   CarouselController get carouselcontroller => _carouselController;
 
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
+
+  Future<void> getImagebanner() async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    final String? loginToken = prefs.getString('auth_token');
+
+    final result = await bannerImageRepositories.getBannerImage(loginToken);
+
+    print('12222222222222111111111111111111111111111111111111 : $result');
+
+    result.fold(
+      (failure) {
+        _errorMessage = failure.message;
+        _isLoading = false;
+        notifyListeners();
+      },
+      (bannerListsuccess) {
+        _bannercarouseldatas = bannerListsuccess;
+        _isLoading = false;
+        notifyListeners();
+      },
+    );
+  }
+
   void nextPage() {
-    if (_currentIndex < carouseldata.length - 1) {
+    if (_currentIndex < _bannercarouseldatas.length - 1) {
       _currentIndex++;
     } else {
       _currentIndex = 0;

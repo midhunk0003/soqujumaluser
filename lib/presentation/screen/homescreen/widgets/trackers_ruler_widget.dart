@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:customersouqjumla/presentation/screen/homescreen/widgets/tracker_ruler_widget_items.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class TrackersRulerWidget extends StatefulWidget {
   const TrackersRulerWidget(
@@ -71,94 +72,98 @@ class _TrackersRulerWidgetState extends State<TrackersRulerWidget> {
     final width = MediaQuery.of(context).size.width;
     // Adjust container height and padding based on screen width
     final containerHeight = width > 600 ? 120.0 : 95.5;
-    final sidePadding = width / 2 - 2;
-    return Stack(
-      alignment: AlignmentDirectional.topCenter,
-      children: [
-        Container(
-          // color: const Color.fromRGBO(255, 255, 255, 1),
-          height: containerHeight,
-          child: ListView(
-            controller: _scrollController,
-            scrollDirection: Axis.horizontal,
-            padding: EdgeInsets.only(
-              left: sidePadding,
-              right: sidePadding,
-            ),
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: Row(
-                      children: List.generate(
-                        10,
-                        (index) {
-                          final value = ((_count / 10) * index).toInt();
-                          return Stack(
-                            children: [
-                              TrackerRulerWidgetItem(
-                                value: value,
-                                index: index,
-                                isLast: _count == (_count / 10) * (index + 1),
-                              )
-                            ],
-                          );
-                        },
+    final sidePadding = width / 2.03 - 2;
+    final sidePaddingtablet = width / 2.615 - 2;
+    return LayoutBuilder(builder: (context, constraints) {
+      bool isTbalet = constraints.maxWidth > 600;
+      return Stack(
+        alignment: AlignmentDirectional.topCenter,
+        children: [
+          Container(
+            // color: const Color.fromRGBO(255, 255, 255, 1),
+            height: containerHeight,
+            child: ListView(
+              controller: _scrollController,
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.only(
+                left: isTbalet ? sidePaddingtablet : sidePadding,
+                right: isTbalet ? sidePaddingtablet : sidePadding,
+              ),
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5),
+                      child: Row(
+                        children: List.generate(
+                          10,
+                          (index) {
+                            final value = ((_count / 10) * index).toInt();
+                            return Stack(
+                              children: [
+                                TrackerRulerWidgetItem(
+                                  value: value,
+                                  index: index,
+                                  isLast: _count == (_count / 10) * (index + 1),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                  // Row(
-                  //   children: List.generate(
-                  //     11,
-                  //     (index) {
-                  //       final value = ((_count / 10) * index).toInt();
-                  //       final valueWidth =
-                  //           ((_count / 10) * (index + 1)).toInt();
-                  //       return SizedBox(
-                  //         width: index > 9
-                  //             ? valueWidth.toString().length * 12
-                  //             : (90 -
-                  //                 (index == 0 &&
-                  //                             valueWidth.toString().length > 1
-                  //                         ? valueWidth.toString().length * 3
-                  //                         : 0)
-                  //                     .toDouble()),
-                  //         child: Row(
-                  //           children: [Text("${value.toString()}")],
-                  //         ),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
-                ],
-              )
-            ],
+                    // Row(
+                    //   children: List.generate(
+                    //     11,
+                    //     (index) {
+                    //       final value = ((_count / 10) * index).toInt();
+                    //       final valueWidth =
+                    //           ((_count / 10) * (index + 1)).toInt();
+                    //       return SizedBox(
+                    //         width: index > 9
+                    //             ? valueWidth.toString().length * 12
+                    //             : (90 -
+                    //                 (index == 0 &&
+                    //                             valueWidth.toString().length > 1
+                    //                         ? valueWidth.toString().length * 3
+                    //                         : 0)
+                    //                     .toDouble()),
+                    //         child: Row(
+                    //           children: [Text("${value.toString()}")],
+                    //         ),
+                    //       );
+                    //     },
+                    //   ),
+                    // ),
+                  ],
+                )
+              ],
+            ),
           ),
-        ),
 
-        ///////
-        Column(
-          children: [
-            Container(
-              height: 60,
-              width: 4,
-              decoration: BoxDecoration(
-                color: Colors.orange,
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(5),
-                  bottomRight: Radius.circular(5),
+          ///////
+          Column(
+            children: [
+              Container(
+                height: isTbalet ? 120 : 70,
+                width: 2,
+                decoration: BoxDecoration(
+                  color: Colors.orange,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(5),
+                    bottomRight: Radius.circular(5),
+                  ),
                 ),
               ),
-            ),
-            Text(
-              widget.unitsMeasurement,
-            )
-          ],
-        )
-      ],
-    );
+              Text(
+                widget.unitsMeasurement,
+              )
+            ],
+          )
+        ],
+      );
+    });
   }
 
   @override

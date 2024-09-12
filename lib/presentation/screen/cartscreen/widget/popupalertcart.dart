@@ -61,8 +61,7 @@ void conformedplacedpopup(BuildContext context) {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, '/bottomnavbar', (route) => false);
+                  Navigator.pushNamed(context, '/bottomnavbar');
                 },
                 child: Container(
                   height: 50,

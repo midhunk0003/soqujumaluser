@@ -10,6 +10,7 @@ class BottomSheetQtyProvider extends ChangeNotifier {
   num get calculatedAmount => _calculatedAmount;
 
   void updateValue(num newValue) {
+    print("new value $newValue");
     _selectedValue = newValue;
     calculateAmount(newValue);
     print("$calculatedAmount");
@@ -23,8 +24,14 @@ class BottomSheetQtyProvider extends ChangeNotifier {
   }
 
   void addToCart(num calculatedquantity, num selectedkg) {
-    print('add tocart total : ${calculatedquantity}');
-    print('add to cart kg : ${selectedkg}');
+    print(
+      'add tocart total : ${calculatedquantity}',
+    );
+    print(
+      'add to cart kg : ${selectedkg.round()}',
+    );
+    final double _calculatedAmount = selectedkg.round() * 14.50;
+    print('calculated amount : $_calculatedAmount');
     notifyListeners();
   }
 }

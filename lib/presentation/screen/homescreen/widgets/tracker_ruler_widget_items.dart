@@ -20,80 +20,82 @@ class TrackerRulerWidgetItem extends StatelessWidget {
 
     // Adjust divider width based on screen size
     final dividerWidth = screenWidth > 600 ? 16.0 : 8.0;
-    return LayoutBuilder(builder: (context, constraints) {
-      final isTablet = constraints.maxWidth > 600;
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Column(
-            children: [
-              SizedBox(
-                height: 40,
-                child: VerticalDivider(
-                  width: 1,
-                  color: Colors.black,
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isTablet = constraints.maxWidth > 600;
+        return Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Column(
+              children: [
+                SizedBox(
+                  height: isTablet ? 80 : 40,
+                  child: VerticalDivider(
+                    width: 1,
+                    color: Colors.black,
+                  ),
                 ),
+              ],
+            ),
+            for (int i = 0; i < 4; i++)
+              Row(
+                children: [
+                  SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                    height: isTablet ? 40 : 20,
+                    child: VerticalDivider(
+                      width: 1,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-          for (int i = 0; i < 4; i++)
-            Row(
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                  height: 20,
-                  child: VerticalDivider(
-                    width: 1,
-                    color: Color.fromARGB(255, 0, 0, 0),
+            SizedBox(
+              width: 10,
+            ),
+            SizedBox(
+              height: isTablet ? 60 : 30,
+              child: VerticalDivider(
+                width: 1,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+            ),
+            for (int i = 0; i < 4; i++)
+              Row(
+                children: [
+                  SizedBox(
+                    width: 10,
                   ),
-                ),
-              ],
-            ),
-          SizedBox(
-            width: 10,
-          ),
-          const SizedBox(
-            height: 30,
-            child: VerticalDivider(
-              width: 1,
-              color: Color.fromARGB(255, 0, 0, 0),
-            ),
-          ),
-          for (int i = 0; i < 4; i++)
-            Row(
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                  height: 20,
-                  child: VerticalDivider(
-                    width: 1,
-                    color: Color.fromARGB(255, 0, 0, 0),
+                  SizedBox(
+                    height: isTablet ? 40 : 20,
+                    child: VerticalDivider(
+                      width: 1,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
+            const SizedBox(
+              width: 10,
             ),
-          SizedBox(
-            width: 10,
-          ),
-          if (isLast)
-            const Column(
-              children: [
-                SizedBox(
-                  width: 1,
-                  height: 40,
-                  child: VerticalDivider(
-                    width: .9,
-                    color: Color.fromARGB(255, 29, 28, 22),
-                  ),
-                )
-              ],
-            ),
-        ],
-      );
-    });
+            if (isLast)
+              const Column(
+                children: [
+                  SizedBox(
+                    width: 1.5,
+                    height: 40,
+                    child: VerticalDivider(
+                      width: .9,
+                      color: Color.fromARGB(255, 29, 28, 22),
+                    ),
+                  )
+                ],
+              ),
+          ],
+        );
+      },
+    );
   }
 }
