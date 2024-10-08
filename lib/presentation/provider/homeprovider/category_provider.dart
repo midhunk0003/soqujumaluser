@@ -29,6 +29,8 @@ class CategoryProvider extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     final String? loginToken = prefs.getString('auth_token');
 
+    await prefs.setString('storeId_In_sharedpref', storeId.toString());
+
     final result =
         await categoryListRepositories.getCategoryList(loginToken, storeId);
 

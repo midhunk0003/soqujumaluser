@@ -18,7 +18,9 @@ class LikeproductRepositoriesImplimenattion implements LikeproductRepositories {
     String? loginToken,
     String? storeId,
     String? productId,
+    String? likeorremoveMessage,
   ) async {
+    showSnackbar(context, likeorremoveMessage);
     final client = http.Client();
     print(storeId);
     print(productId);
@@ -39,10 +41,10 @@ class LikeproductRepositoriesImplimenattion implements LikeproductRepositories {
       if (response.statusCode == 200) {
         print(11111111111111111);
         final responseData = json.decode(response.body);
-       
+
         if (responseData['status'] == true) {
-           final suuccesmessage = responseData['message'];
-          showSnackbar(context,suuccesmessage);
+          final suuccesmessage = responseData['message'];
+
           return Right(Success(message: responseData['message']));
         } else {
           return Left(ServerFailure(responseData['message']));
@@ -106,24 +108,19 @@ class LikeproductRepositoriesImplimenattion implements LikeproductRepositories {
   }
 }
 
-void showSnackbar(BuildContext context,suuccesmessage) {
+void showSnackbar(BuildContext context, suuccesmessage) {
+  // Show the snackbar
   final snackBar = SnackBar(
-    content: Padding(
-      padding:
-          const EdgeInsets.all(8.0), // This adds the margin inside the Snackbar
-      child: Container(
-        padding: const EdgeInsets.all(
-            16.0), // This can be used for additional padding inside the Snackbar
-        color: Colors.black.withOpacity(0.6),
-        child: Text(
-          '$suuccesmessage',
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
-    ),
-    behavior: SnackBarBehavior
-        .floating, // Makes the Snackbar float above other content
+    duration: const Duration(seconds: 2), // Duration snackbar is shown
+    content: Text('$suuccesmessage'),
+    behavior: SnackBarBehavior.floating, // To float snackbar over content
+    backgroundColor: const Color.fromARGB(
+      225,
+      76,
+      175,
+      79,
+    ), // Customize the background color
   );
-
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

@@ -56,9 +56,10 @@ class CarouselProvider extends ChangeNotifier {
     } else {
       _currentIndex = 0;
     }
+
     _carouselController.animateTo(
-      09,
-      duration: const Duration(microseconds: 1000),
+      _currentIndex.toDouble(),
+      duration: Duration(microseconds: 100),
       curve: Curves.bounceIn,
     ); // Slide to the next page
     notifyListeners();

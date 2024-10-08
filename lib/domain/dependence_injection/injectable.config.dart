@@ -19,16 +19,23 @@ import '../../data/repositories_imp/category_by_product_repository_implimentatio
     as _i83;
 import '../../data/repositories_imp/category_list_repository_implimentation.dart'
     as _i945;
+import '../../data/repositories_imp/deleteaccount_implimentation.dart' as _i362;
 import '../../data/repositories_imp/enter_location_repository_implimentation.dart'
     as _i782;
 import '../../data/repositories_imp/likeproduct_repositories_implimenattion.dart'
     as _i886;
 import '../../data/repositories_imp/login_with_phonenumber_repoimpl.dart'
     as _i682;
+import '../../data/repositories_imp/place_order_repo_implimentation.dart'
+    as _i476;
+import '../../data/repositories_imp/profile_repository_implimentation.dart'
+    as _i38;
 import '../../data/repositories_imp/store_repository_implimentation.dart'
     as _i751;
 import '../../presentation/provider/authprovider/loginprovider.dart' as _i939;
 import '../../presentation/provider/cartprovider/cart_provider.dart' as _i676;
+import '../../presentation/provider/delete_provider/deleteprovider.dart'
+    as _i886;
 import '../../presentation/provider/enterlocationprovider/enterlocationsprovider.dart'
     as _i132;
 import '../../presentation/provider/enterlocationprovider/test.provider.dart'
@@ -41,15 +48,22 @@ import '../../presentation/provider/homeprovider/homeccarouselprovider.dart'
     as _i524;
 import '../../presentation/provider/likedproductprovider/likedproductprovider.dart'
     as _i431;
+import '../../presentation/provider/placeorder/placeorderprovider.dart'
+    as _i837;
+import '../../presentation/provider/profileprovider/profileprovider.dart'
+    as _i838;
 import '../../presentation/provider/selectstoreprovider/selectstoreprovider.dart'
     as _i454;
 import '../repositories/banner_image_repositories.dart' as _i147;
 import '../repositories/cart_repositories.dart' as _i220;
 import '../repositories/category_by_product.repositories.dart' as _i616;
 import '../repositories/category_list_repositories.dart' as _i793;
+import '../repositories/deleteaccount_repositories.dart' as _i199;
 import '../repositories/enter_your_location_repositories.dart' as _i1022;
 import '../repositories/likeproduct_repositories.dart' as _i939;
 import '../repositories/login_with_phone_number_repositories.dart' as _i809;
+import '../repositories/place_order_repositories.dart' as _i1042;
+import '../repositories/profile_repositories.dart' as _i766;
 import '../repositories/store_list_repositories.dart' as _i387;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -71,10 +85,20 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i945.CategoryListRepositoryImplimentation());
     gh.lazySingleton<_i387.StoreListRepositories>(
         () => _i751.StoreRepositoryImplimentation());
+    gh.lazySingleton<_i766.ProfileRepositories>(
+        () => _i38.ProfileRepositoryImplimentation());
+    gh.lazySingleton<_i199.DeleteaccountRepositories>(
+        () => _i362.DeleteaccountImplimentation());
     gh.lazySingleton<_i809.LoginRepositories>(
         () => _i682.LoginRepositoriesImplimentation());
+    gh.factory<_i886.DeleteAccountprovider>(() => _i886.DeleteAccountprovider(
+        deleteaccountRepositories: gh<_i199.DeleteaccountRepositories>()));
     gh.lazySingleton<_i616.CategoryByProductRepositories>(
         () => _i83.CategoryByProductRepositoryImplimentation());
+    gh.lazySingleton<_i1042.PlaceOrderRepositories>(
+        () => _i476.PlaceOrderRepoImplimentation());
+    gh.factory<_i838.Profileprovider>(() => _i838.Profileprovider(
+        profileRepositories: gh<_i766.ProfileRepositories>()));
     gh.lazySingleton<_i1022.EnterlocationRepositories>(
         () => _i782.EnterLocationRepositoryImplimentation());
     gh.lazySingleton<_i147.BannerImageRepositories>(
@@ -95,6 +119,8 @@ extension GetItInjectableX on _i174.GetIt {
         likeproductRepositories: gh<_i939.LikeproductRepositories>()));
     gh.factory<_i346.CategoryProvider>(() => _i346.CategoryProvider(
         categoryListRepositories: gh<_i793.CategoryListRepositories>()));
+    gh.factory<_i837.Placeorderprovider>(() => _i837.Placeorderprovider(
+        placeOrderRepositories: gh<_i1042.PlaceOrderRepositories>()));
     gh.factory<_i1059.CategoryByProductProvider>(() =>
         _i1059.CategoryByProductProvider(
             categoryByProductRepositories:

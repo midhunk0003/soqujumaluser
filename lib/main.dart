@@ -1,6 +1,7 @@
 import 'package:customersouqjumla/domain/dependence_injection/injectable.dart';
 import 'package:customersouqjumla/presentation/provider/authprovider/loginprovider.dart';
 import 'package:customersouqjumla/presentation/provider/cartprovider/cart_provider.dart';
+import 'package:customersouqjumla/presentation/provider/delete_provider/deleteprovider.dart';
 import 'package:customersouqjumla/presentation/provider/enterlocationprovider/enterlocationsprovider.dart';
 import 'package:customersouqjumla/presentation/provider/helpandsupportprovider/faqprovider.dart';
 import 'package:customersouqjumla/presentation/provider/homeprovider/bottomsheet_qty_change_provider.dart';
@@ -10,6 +11,8 @@ import 'package:customersouqjumla/presentation/provider/homeprovider/homeccarous
 import 'package:customersouqjumla/presentation/provider/likedproductprovider/likedproductprovider.dart';
 import 'package:customersouqjumla/presentation/provider/notificationprovider/notificationchangiconprovider.dart';
 import 'package:customersouqjumla/presentation/provider/onboardprovider/onboardprovider.dart';
+import 'package:customersouqjumla/presentation/provider/placeorder/placeorderprovider.dart';
+import 'package:customersouqjumla/presentation/provider/profileprovider/profileprovider.dart';
 import 'package:customersouqjumla/presentation/provider/selectstoreprovider/selectstoreprovider.dart';
 import 'package:customersouqjumla/presentation/screen/authscreen/loginphonenumber.dart';
 import 'package:customersouqjumla/presentation/screen/authscreen/validateotp.dart';
@@ -25,6 +28,7 @@ import 'package:customersouqjumla/presentation/screen/notificationscreen/notific
 import 'package:customersouqjumla/presentation/screen/onboardingscreen/onboardingscreen_one.dart';
 import 'package:customersouqjumla/presentation/screen/profilescreen/aboutus.dart';
 import 'package:customersouqjumla/presentation/screen/profilescreen/contact.dart';
+import 'package:customersouqjumla/presentation/screen/profilescreen/deleteacount.dart';
 import 'package:customersouqjumla/presentation/screen/profilescreen/faqs.dart';
 import 'package:customersouqjumla/presentation/screen/profilescreen/helpandsupport.dart';
 import 'package:customersouqjumla/presentation/screen/profilescreen/myorder.dart';
@@ -33,6 +37,7 @@ import 'package:customersouqjumla/presentation/screen/profilescreen/personaldeta
 import 'package:customersouqjumla/presentation/screen/profilescreen/profilescreen.dart';
 import 'package:customersouqjumla/presentation/screen/profilescreen/registerandcomplaints.dart';
 import 'package:customersouqjumla/presentation/screen/selectstorescreen/selectstorescreen.dart';
+import 'package:customersouqjumla/presentation/screen/splashscreen/splashscreen.dart';
 import 'package:customersouqjumla/presentation/widgets/bottomnavbar.dart';
 import 'package:customersouqjumla/presentation/widgets/ruler_picker_custom.dart';
 import 'package:device_preview/device_preview.dart';
@@ -46,13 +51,13 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configurationInjection();
   final prefs = await SharedPreferences.getInstance();
-  prefs.clear();
+  // prefs.clear();
   final String? loginToken = prefs.getString('auth_token');
   print('Login Token: $loginToken');
   runApp(
     DevicePreview(
         builder: (context) => MyApp(
-              initialRoute: loginToken != null ? '/enterlocation' : '/',
+              initialRoute: '/',
             )),
     // const MyApp(),
   );
@@ -68,6 +73,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => OnboardingProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => getIt<Profileprovider>(),
         ),
         ChangeNotifierProvider(
           create: (_) => getIt<CarouselProvider>(),
@@ -101,6 +109,12 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => getIt<CartProvider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => getIt<DeleteAccountprovider>(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => getIt<Placeorderprovider>(),
         )
       ],
       child: MaterialApp(
@@ -116,7 +130,12 @@ class MyApp extends StatelessWidget {
           switch (settings.name) {
             case '/':
               return _createRoute(
-                const OnboardingscreenOne(),
+                Splashscreen(),
+                // const OnboardingscreenOne(),
+              );
+            case '/onboardingscreenone':
+              return _createRoute(
+                OnboardingscreenOne(),
               );
 
             case '/loginphonenumber':
@@ -163,8 +182,13 @@ class MyApp extends StatelessWidget {
               );
 
             case '/AddressCart':
+              final argus = settings.arguments as Map<String, dynamic>;
+              final int? storeId = argus['storeId'];
+              print("inside the route : $storeId");
               return _createRoute(
-                Addresscart(),
+                Addresscart(
+                  storeId: storeId,
+                ),
               );
 
             case '/personaldetails':
@@ -178,8 +202,12 @@ class MyApp extends StatelessWidget {
               );
 
             case '/ordersummary':
+              final argus = settings.arguments as Map<String, dynamic>;
+              final int? orderId = argus['orderId'];
               return _createRoute(
-                Ordersummary(),
+                Ordersummary(
+                  orderId: orderId,
+                ),
               );
 
             case '/aboutus':
@@ -193,10 +221,14 @@ class MyApp extends StatelessWidget {
               );
 
             case '/contact':
-              return _createRoute(Contact());
+              return _createRoute(
+                Contact(),
+              );
 
             case '/Registerandcomplaints':
-              return _createRoute(Registerandcomplaints());
+              return _createRoute(
+                Registerandcomplaints(),
+              );
 
             case '/faqs':
               return _createRoute(
@@ -206,6 +238,10 @@ class MyApp extends StatelessWidget {
             case '/notification':
               return _createRoute(
                 Notificationscreen(),
+              );
+            case '/deleteaccount':
+              return _createRoute(
+                DeleteAccount(),
               );
             default:
             // return MaterialPageRoute(builder: (context) => NotFoundScreen());

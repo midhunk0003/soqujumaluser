@@ -7,4 +7,5 @@ import 'package:dartz/dartz.dart';
 abstract class LoginRepositories {
   Future<Either<Failure, LoginResponseModel>> loginWithMobileNumber(
       String? phonenumber, String? fcmToken);
+      
 }

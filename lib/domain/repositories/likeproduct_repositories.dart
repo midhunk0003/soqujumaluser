@@ -10,6 +10,7 @@ abstract class LikeproductRepositories {
     String? loginToken,
     String? storeId,
     String? productId,
+    String? likeorremoveMessage,
   );
   Future<Either<Failure, List<LikedProduct>>> getLikedProduct(
     String? loginToken,

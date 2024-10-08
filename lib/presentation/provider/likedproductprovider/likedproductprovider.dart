@@ -14,7 +14,7 @@ class Likedproductprovider extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
   String? _message;
-  bool _isLiked = false;
+  // bool _isLiked = false;
   List<LikedProduct>? _likedProductList;
 
   //getter
@@ -22,14 +22,19 @@ class Likedproductprovider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
   String? get message => _message;
-  bool get isLiked => _isLiked;
+  // bool get isLiked => _isLiked;
   List<LikedProduct>? get likedProductList => _likedProductList;
 
-  Future<void> postTolikedProduct(String? storeId, String? productId,
-      bool isLikedvalue, context, CategoryByProduct product) async {
+  Future<void> postTolikedProduct(
+      String? storeId,
+      String? productId,
+      bool isLikedvalue,
+      context,
+      CategoryByProduct product,
+      String? likeorremoveMessage) async {
     _isLoading = true;
-    _isLiked = isLikedvalue;
-    product.islike = isLikedvalue;
+    // _isLiked = isLikedvalue;
+    product.islike = !product.islike!;
 
     _errorMessage = null;
     notifyListeners();
@@ -38,13 +43,18 @@ class Likedproductprovider extends ChangeNotifier {
     print("data : $productId");
     print("data : $isLikedvalue");
 
-    _isLiked = isLikedvalue;
+    // _isLiked = isLikedvalue;
 
     final prefs = await SharedPreferences.getInstance();
     final String? loginToken = prefs.getString('auth_token');
 
     final result = await likeproductRepositories.postProduct(
-        context, loginToken, storeId, productId);
+      context,
+      loginToken,
+      storeId,
+      productId,
+      likeorremoveMessage,
+    );
 
     print("add liked product in provider : ${result}");
 

@@ -110,6 +110,7 @@ class Selectstorescreen extends StatelessWidget {
                                             '${datastoreList[index].id}');
                                         final storeId = datastoreList[index].id;
                                         print("cat id : $storeId");
+                                        
                                         Navigator.pushNamed(
                                           context,
                                           '/bottomnavbar',

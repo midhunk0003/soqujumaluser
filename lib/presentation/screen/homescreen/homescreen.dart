@@ -8,60 +8,102 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
-class Homescreen extends StatelessWidget {
+class Homescreen extends StatefulWidget {
   final int? storeId;
   Homescreen({Key? key, required this.storeId}) : super(key: key);
 
+  @override
+  State<Homescreen> createState() => _HomescreenState();
+}
+
+class _HomescreenState extends State<Homescreen> {
   TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        Provider.of<CategoryProvider>(context, listen: false)
+            .getCategory(widget.storeId.toString());
+        Provider.of<CarouselProvider>(context, listen: false).getImagebanner();
+      },
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<CategoryProvider>(context, listen: false)
-          .getCategory(storeId.toString());
-      Provider.of<CarouselProvider>(context, listen: false).getImagebanner();
-    });
-    return Consumer2<CarouselProvider, CategoryProvider>(
-      builder: (context, carouserpro, categoryProvider, child) {
-        if (categoryProvider.isLoading == true) {
-          return Center(
-            child: Lottie.asset(
-              'assets/json/loadingcircle.json',
-              width: 200,
-              height: 150,
-              fit: BoxFit.fill,
-            ),
-          );
-        } else if (categoryProvider.errorMessage != null) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(child: Text("${categoryProvider.errorMessage}")),
-                SizedBox(
-                  height: 10,
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: CustomAppBar(
+        automaticallyImplyLeading1: false,
+        title: InkWell(
+          onTap: () {
+            Navigator.pushNamedAndRemoveUntil(
+              context,
+              '/selectstorescreen',
+              (route) => false,
+            );
+          },
+          child: Row(
+            children: [
+              Image(
+                width: 92,
+                image: AssetImage(
+                  'assets/images/logo.png',
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    categoryProvider.getCategory(storeId.toString());
-                  },
-                  child: Text("Retry"),
-                )
-              ],
-            ),
-          );
-        }
-        return Scaffold(
-          backgroundColor: Colors.white,
-          appBar: const CustomAppBar(
-            automaticallyImplyLeading1: true,
-            title: Image(
-              width: 92,
-              image: AssetImage(
-                'assets/images/logo.png',
               ),
-            ),
+              SizedBox(
+                width: 5,
+              ),
+              Icon(
+                Icons.arrow_drop_down_circle,
+                color: Colors.green,
+              ),
+            ],
           ),
-          body: SingleChildScrollView(
+        ),
+      ),
+      body: Consumer2<CarouselProvider, CategoryProvider>(
+        builder: (context, carouserpro, categoryProvider, child) {
+          if (categoryProvider.isLoading == true) {
+            return Shimmer.fromColors(
+              baseColor: Colors.grey[300]!,
+              highlightColor: Colors.grey[100]!,
+              child: ListView.builder(
+                itemCount: 6, // Adjust item count as needed
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 100.0,
+                      color: Colors.white,
+                    ),
+                  );
+                },
+              ),
+            );
+          } else if (categoryProvider.errorMessage != null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(child: Text("${categoryProvider.errorMessage}")),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      categoryProvider.getCategory(widget.storeId.toString());
+                    },
+                    child: Text("Retry"),
+                  )
+                ],
+              ),
+            );
+          }
+          return SingleChildScrollView(
             child: LayoutBuilder(
               builder: (context, constraints) {
                 bool isTablet = constraints.maxWidth > 600;
@@ -171,44 +213,41 @@ class Homescreen extends StatelessWidget {
                                   itemBuilder: (context, index, realIndex) {
                                     final item =
                                         carouserpro.bannercarouseldatas[index];
-                                    return Shimmer.fromColors(
-                                      baseColor: Colors.grey[300]!,
-                                      highlightColor: Colors.grey[100]!,
-                                      child: Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          image: DecorationImage(
-                                            scale: isTablet ? 18 : 22,
-                                            alignment: Alignment.bottomRight,
-                                            image: NetworkImage(
-                                              'https://souq-jumla.noviindusdemosites.in/${item.image}',
-                                            ),
-                                            fit: BoxFit.fill,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                            Radius.circular(20),
-                                          ),
-                                          color: const Color.fromARGB(
-                                              255, 151, 216, 253),
-                                        ),
-                                        child: Padding(
-                                          padding: isTablet
-                                              ? const EdgeInsets.only(
-                                                  left: 30, top: 40)
-                                              : const EdgeInsets.only(
-                                                  left: 18, top: 33),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              SizedBox(
-                                                height: isTablet ? 12 : 6,
-                                              ),
-                                              SizedBox(
-                                                height: isTablet ? 20 : 10,
-                                              ),
-                                            ],
-                                          ),
+                                    return Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(20)),
+                                        color: const Color.fromARGB(
+                                            255, 151, 216, 253),
+                                      ),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: Image.network(
+                                          "https://souq-jumla.noviindusdemosites.in/${item.image}",
+                                          fit: BoxFit.cover,
+                                          loadingBuilder: (context, child,
+                                              loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child; // Image is fully loaded
+                                            } else {
+                                              // Show progress indicator while loading
+                                              return Shimmer.fromColors(
+                                                baseColor: Colors.grey[300]!,
+                                                highlightColor:
+                                                    Colors.grey[100]!,
+                                                child: Container(
+                                                  height: isTablet ? 250 : 125,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    color: Colors.grey[300],
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          },
                                         ),
                                       ),
                                     );
@@ -220,12 +259,16 @@ class Homescreen extends StatelessWidget {
                                     viewportFraction: 1.0,
                                     onPageChanged: (index, reason) {
                                       print("on page change index : $index");
-                                      // carouserpro.currentIndex;
                                       carouserpro.nextPage();
-                                      // carouserpro.currentIndex = index;
                                       carouserpro.notifyListeners();
                                     },
-                                    initialPage: carouserpro.currentIndex,
+                                    initialPage: carouserpro.currentIndex >=
+                                                0 &&
+                                            carouserpro.currentIndex <
+                                                carouserpro
+                                                    .bannercarouseldatas.length
+                                        ? carouserpro.currentIndex
+                                        : 0, // Make sure initialPage is valid
                                   ),
                                 ),
                               ],
@@ -323,7 +366,7 @@ class Homescreen extends StatelessWidget {
                                         categoryProvider.categoryList!;
                                     return InkWell(
                                       onTap: () {
-                                        print("store id : ${storeId}");
+                                        print("store id : ${widget.storeId}");
                                         print(
                                             "category Id : ${datalist[index].id}");
                                         final categoryId = datalist[index].id;
@@ -331,26 +374,26 @@ class Homescreen extends StatelessWidget {
                                           context,
                                           '/Homesubcategory',
                                           arguments: {
-                                            'storeid': storeId,
+                                            'storeid': widget.storeId,
                                             'categotyid': categoryId
                                           },
                                         );
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.blue,
-                                              // color: const Color.fromARGB(
-                                              //         255, 0, 0, 0)
-                                              // .withOpacity(0.5), // Shadow color
-                                              spreadRadius:
-                                                  0.5, // Spread radius
-                                              blurRadius: 5, // Blur radius
-                                              offset: Offset(0,
-                                                  3), // Shadow position (x, y)
-                                            ),
-                                          ],
+                                          // boxShadow: [
+                                          //   BoxShadow(
+                                          //     // color: Colors.blue,
+                                          //     // color: const Color.fromARGB(
+                                          //     //         255, 0, 0, 0)
+                                          //     // .withOpacity(0.5), // Shadow color
+                                          //     spreadRadius:
+                                          //         0.5, // Spread radius
+                                          //     blurRadius: 5, // Blur radius
+                                          //     offset: Offset(0,
+                                          //         3), // Shadow position (x, y)
+                                          //   ),
+                                          // ],
                                           border: Border.all(
                                               width: 0.8, color: Colors.grey),
                                           borderRadius:
@@ -371,7 +414,8 @@ class Homescreen extends StatelessWidget {
                                                     color: Colors.transparent,
                                                     borderRadius:
                                                         BorderRadius.circular(
-                                                            20),
+                                                      20,
+                                                    ),
                                                   ),
                                                   child: ClipRRect(
                                                     borderRadius:
@@ -404,7 +448,8 @@ class Homescreen extends StatelessWidget {
                                                                 borderRadius:
                                                                     BorderRadius
                                                                         .circular(
-                                                                            20),
+                                                                  20,
+                                                                ),
                                                                 color: Colors
                                                                     .grey[300],
                                                               ),
@@ -487,9 +532,9 @@ class Homescreen extends StatelessWidget {
                 );
               },
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

@@ -1,4 +1,6 @@
+import 'package:customersouqjumla/presentation/provider/profileprovider/profileprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void showDilogfunc(BuildContext context) {
   showDialog(
@@ -44,23 +46,35 @@ void showDilogfunc(BuildContext context) {
                     SizedBox(
                       width: 15,
                     ),
-                    Expanded(
-                      child: InkWell(
-                        onTap: () {},
-                        child: Container(
-                          height: 35,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: const Color.fromARGB(255, 238, 2, 2)),
-                          child: Center(
-                            child: Text(
-                              "conformed",
-                              style: TextStyle(color: Colors.white),
+                    Consumer<Profileprovider>(
+                      builder: (context, profileProvider, child) {
+                        return Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              // logOut();
+                              profileProvider.logOut(context);
+                            },
+                            child: Container(
+                              height: 35,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: const Color.fromARGB(255, 238, 2, 2)),
+                              child: profileProvider.isLoading == false
+                                  ? Center(
+                                      child: Text(
+                                        "conformed",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    )
+                                  : Center(
+                                      child: CircularProgressIndicator(),
+                                    ),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     )
+
                     // ElevatedButton(
                     //   style: ButtonStyle(
                     //     backgroundColor:

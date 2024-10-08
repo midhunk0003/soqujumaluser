@@ -64,7 +64,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                                 Navigator.pushNamed(context, '/notification');
                               },
                               icon: Image.asset(
-                                  'assets/images/notificationicon.png'),
+                                'assets/images/notificationicon.png',
+                              ),
                             )
                           : IconButton(
                               onPressed: () {},
@@ -73,32 +74,32 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                               ),
                             ),
                       Positioned(
-                          left: 16,
-                          right: 1,
-                          top: 4,
-                          child: CircleAvatar(
-                            backgroundColor:
-                                NotifProviderIconchange.isNotificationIcon ==
-                                        true
-                                    ? Colors.red
-                                    : Colors.green,
-                            radius: 8,
-                            child: Center(
-                              child: Text(
-                                '2',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 9,
-                                ),
-                                overflow: TextOverflow.ellipsis,
+                        left: 16,
+                        right: 1,
+                        top: 4,
+                        child: CircleAvatar(
+                          backgroundColor:
+                              NotifProviderIconchange.isNotificationIcon == true
+                                  ? Colors.red
+                                  : Colors.green,
+                          radius: 8,
+                          child: Center(
+                            child: Text(
+                              '0',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 9,
                               ),
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          ))
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 );
               },
-            )
+            ),
           ],
     );
   }

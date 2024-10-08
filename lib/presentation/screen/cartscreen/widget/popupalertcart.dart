@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-void conformedplacedpopup(BuildContext context) {
+void conformedplacedpopup(BuildContext context, int? storeId) {
   showDialog(
     context: context,
     builder: (context) {
@@ -61,7 +61,11 @@ void conformedplacedpopup(BuildContext context) {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, '/bottomnavbar');
+                  Navigator.pushNamed(
+                    context,
+                    '/bottomnavbar',
+                    arguments: {'storeId': storeId},
+                  );
                 },
                 child: Container(
                   height: 50,

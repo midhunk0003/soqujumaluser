@@ -14,91 +14,106 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
-class Homesubcategory extends StatelessWidget {
+class Homesubcategory extends StatefulWidget {
   final int? storeId;
   final int? categoryId;
   Homesubcategory({Key? key, required this.storeId, required this.categoryId})
       : super(key: key);
 
+  @override
+  State<Homesubcategory> createState() => _HomesubcategoryState();
+}
+
+class _HomesubcategoryState extends State<Homesubcategory> {
   num _selectedValue = 14.50;
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<CategoryByProductProvider>(context, listen: false)
           .getcategoryByproduct(
-              storeId.toString(), categoryId.toString(), true);
+              widget.storeId.toString(), widget.categoryId.toString(), true);
     });
-    return Consumer2<CategoryByProductProvider, Likedproductprovider>(
-      builder:
-          (context, categoryByproductProvider, likedProductProvider, child) {
-        final categoryByProductdatalist =
-            categoryByproductProvider.categoryByProductList;
-        print(
-            '4564564564564564564565 :${likedProductProvider.likedProductList}');
-        if (categoryByproductProvider.isLoading == true) {
-          return Center(
-            child: Center(
-              child: Lottie.asset(
-                'assets/json/loadingcircle.json',
-                width: 200,
-                height: 150,
-                fit: BoxFit.fill,
-              ),
-            ),
-          );
-        } else if (categoryByproductProvider.errorMessage != null) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                    child: Text("${categoryByproductProvider.errorMessage}")),
-                SizedBox(
-                  height: 10,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    categoryByproductProvider.getcategoryByproduct(
-                        storeId.toString(), categoryId.toString(), true);
-                  },
-                  child: Text("Retry"),
-                )
-              ],
-            ),
-          );
-        } else if (categoryByProductdatalist == null ||
-            categoryByProductdatalist.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(child: Text("Product is empty")),
-                SizedBox(
-                  height: 10,
-                ),
-                // ElevatedButton(
-                //   onPressed: () {
-                //     categoryByproductProvider.getcategoryByproduct(
-                //         storeId.toString(), categoryId.toString());
-                //   },
-                //   child: Text("Retry"),
-                // )
-              ],
-            ),
-          );
-        }
-        return Scaffold(
-          appBar: const CustomAppBar(
-            automaticallyImplyLeading1: true,
-            title: Image(
-              width: 92,
-              image: AssetImage(
-                'assets/images/logo.png',
-              ),
-            ),
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: const CustomAppBar(
+        automaticallyImplyLeading1: true,
+        title: Image(
+          width: 92,
+          image: AssetImage(
+            'assets/images/logo.png',
           ),
-          body: SingleChildScrollView(
+        ),
+      ),
+      body: Consumer2<CategoryByProductProvider, Likedproductprovider>(
+        builder:
+            (context, categoryByproductProvider, likedProductProvider, child) {
+          final categoryByProductdatalist =
+              categoryByproductProvider.categoryByProductList;
+          print(
+              '4564564564564564564565 :${likedProductProvider.likedProductList}');
+
+          if (categoryByproductProvider.isLoading == true) {
+            return Center(
+              child: Center(
+                child: Lottie.asset(
+                  'assets/json/loadingcircle.json',
+                  width: 200,
+                  height: 150,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            );
+          } else if (categoryByproductProvider.errorMessage != null) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(
+                      child: Text("${categoryByproductProvider.errorMessage}")),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      categoryByproductProvider.getcategoryByproduct(
+                        widget.storeId.toString(),
+                        widget.categoryId.toString(),
+                        true,
+                      );
+                    },
+                    child: const Text("Retry"),
+                  )
+                ],
+              ),
+            );
+          } else if (categoryByProductdatalist == null ||
+              categoryByProductdatalist.isEmpty) {
+            return const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(child: Text("Product is empty")),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     categoryByproductProvider.getcategoryByproduct(
+                  //         storeId.toString(), categoryId.toString());
+                  //   },
+                  //   child: Text("Retry"),
+                  // )
+                ],
+              ),
+            );
+          }
+          return SingleChildScrollView(
             child: LayoutBuilder(
               builder: (context, constraints) {
                 bool isTablet = constraints.maxWidth > 600;
@@ -210,8 +225,8 @@ class Homesubcategory extends StatelessWidget {
                                 mainAxisExtent: isTablet ? 300 : 200,
                               ),
                               itemBuilder: (context, index) {
-                                final dataListofcategoryByproduct =
-                                    categoryByProductdatalist[index];
+                                // final dataListofcategoryByproduct =
+                                //     categoryByProductdatalist[index];
 
                                 // final categoryProductId =
                                 //     categoryByProductdatalist[index].id;
@@ -259,7 +274,7 @@ class Homesubcategory extends StatelessWidget {
                                                           BorderRadius.circular(
                                                               20),
                                                       child: Image.network(
-                                                        'https://souq-jumla.noviindusdemosites.in/${dataListofcategoryByproduct.image}',
+                                                        'https://souq-jumla.noviindusdemosites.in/${categoryByProductdatalist[index].image}',
                                                         fit: BoxFit.cover,
                                                         loadingBuilder: (context,
                                                             child,
@@ -306,7 +321,7 @@ class Homesubcategory extends StatelessWidget {
                                                     CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    '${dataListofcategoryByproduct.engTitle}',
+                                                    '${categoryByProductdatalist[index].engTitle}',
                                                     style: TextStyle(
                                                       color: Colors.black,
                                                       fontSize:
@@ -318,11 +333,13 @@ class Homesubcategory extends StatelessWidget {
                                                   SizedBox(
                                                     height: isTablet ? 10 : 5,
                                                   ),
-                                                  dataListofcategoryByproduct
-                                                          .unit!.isEmpty
-                                                      ? SizedBox()
+                                                  categoryByProductdatalist[
+                                                              index]
+                                                          .unit!
+                                                          .isEmpty
+                                                      ? const SizedBox()
                                                       : Text(
-                                                          'By weight AED ${dataListofcategoryByproduct.price}/ KG',
+                                                          'By weight AED ${categoryByProductdatalist[index].price}/ KG',
                                                           style: TextStyle(
                                                             color: const Color
                                                                 .fromARGB(
@@ -352,7 +369,7 @@ class Homesubcategory extends StatelessWidget {
                                                       .spaceBetween,
                                               children: [
                                                 Text(
-                                                  'AED${dataListofcategoryByproduct.price}',
+                                                  'AED${categoryByProductdatalist[index].price}',
                                                   style: TextStyle(
                                                     color: const Color.fromARGB(
                                                       255,
@@ -373,32 +390,38 @@ class Homesubcategory extends StatelessWidget {
                                                   child: IconButton(
                                                     onPressed: () {
                                                       final productId =
-                                                          dataListofcategoryByproduct
+                                                          categoryByProductdatalist[
+                                                                  index]
                                                               .id;
                                                       final productImage =
-                                                          dataListofcategoryByproduct
+                                                          categoryByProductdatalist[
+                                                                  index]
                                                               .image;
                                                       final productName =
-                                                          dataListofcategoryByproduct
+                                                          categoryByProductdatalist[
+                                                                  index]
                                                               .engTitle;
                                                       final productPrice =
-                                                          dataListofcategoryByproduct
+                                                          categoryByProductdatalist[
+                                                                  index]
                                                               .price;
                                                       final productUnit =
-                                                          dataListofcategoryByproduct
+                                                          categoryByProductdatalist[
+                                                                  index]
                                                               .unit;
                                                       showscrollingBottomsheet(
                                                         context,
                                                         index,
-                                                        storeId,
+                                                        widget.storeId,
                                                         productId,
                                                         productImage,
                                                         productName,
                                                         productPrice,
                                                         productUnit,
+                                                        "Successfully add to cart",
                                                       );
                                                     },
-                                                    icon: Icon(
+                                                    icon: const Icon(
                                                       Icons.add_box_rounded,
                                                       size: 34,
                                                       color: Colors.green,
@@ -425,48 +448,54 @@ class Homesubcategory extends StatelessWidget {
                                         child: GestureDetector(
                                           onTap: () async {
                                             final productid =
-                                                dataListofcategoryByproduct.id;
+                                                categoryByProductdatalist[index]
+                                                    .id;
                                             bool? isLiked =
-                                                dataListofcategoryByproduct
+                                                categoryByProductdatalist[index]
                                                     .islike;
-                                            likedProductProvider.isLiked ==
+                                            categoryByProductdatalist[index]
+                                                        .islike ==
                                                     false
-                                                ? await likedProductProvider
+                                                ? likedProductProvider
                                                     .postTolikedProduct(
-                                                        storeId.toString(),
+                                                        widget.storeId
+                                                            .toString(),
                                                         productid.toString(),
                                                         true,
                                                         context,
-                                                        dataListofcategoryByproduct)
-                                                : await likedProductProvider
+                                                        categoryByProductdatalist[
+                                                            index],
+                                                        "Successfully added to liked product")
+                                                : likedProductProvider
                                                     .postTolikedProduct(
-                                                        storeId.toString(),
+                                                        widget.storeId
+                                                            .toString(),
                                                         productid.toString(),
                                                         false,
                                                         context,
-                                                        dataListofcategoryByproduct);
+                                                        categoryByProductdatalist[
+                                                            index],
+                                                        "Successfully Removed");
 
-                                            await categoryByproductProvider
-                                                .getcategoryByproduct(
-                                                    storeId.toString(),
-                                                    categoryId.toString(),
-                                                    false);
+                                            // categoryByproductProvider
+                                            //     .getcategoryByproduct(
+                                            //         widget.storeId.toString(),
+                                            //         widget.categoryId
+                                            //             .toString(),
+                                            //         false);
                                             likedProductProvider
                                                 .getLikedProductList(
-                                              storeId.toString(),
+                                              widget.storeId.toString(),
                                             );
                                           },
                                           child: Image(
                                             // color: Colors.grey,
-                                            image: dataListofcategoryByproduct
-                                                        .islike ==
-                                                    true
-                                                ? AssetImage(
-                                                    'assets/images/likedimage.png',
-                                                  )
-                                                : AssetImage(
-                                                    'assets/images/iconimage/heartblack.png',
-                                                  ),
+                                            image: AssetImage(
+                                                categoryByProductdatalist[index]
+                                                            .islike ==
+                                                        true
+                                                    ? 'assets/images/likedimage.png'
+                                                    : 'assets/images/iconimage/heartblack.png'),
                                           ),
                                         ),
                                       ),
@@ -476,7 +505,7 @@ class Homesubcategory extends StatelessWidget {
                               },
                             ),
                           )
-                        : Container(
+                        : const SizedBox(
                             height: 600,
                             // color: Colors.amber,
                             child: Column(
@@ -495,9 +524,9 @@ class Homesubcategory extends StatelessWidget {
                 );
               },
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:customersouqjumla/data/model/liked_product_model/liked_product_model.dart';
+import 'package:customersouqjumla/presentation/provider/cartprovider/cart_provider.dart';
 import 'package:customersouqjumla/presentation/provider/likedproductprovider/likedproductprovider.dart';
 import 'package:customersouqjumla/presentation/screen/cartscreen/cartscreen.dart';
 import 'package:customersouqjumla/presentation/screen/homescreen/homescreen.dart';
@@ -37,10 +38,10 @@ class _BottomnavbarState extends State<Bottomnavbar> {
         storeId: widget.storeId,
       ),
       Likedscreen(
-         storeId: widget.storeId,
+        storeId: widget.storeId,
       ),
       Cartscreen(
-         storeId: widget.storeId,
+        storeId: widget.storeId,
       ),
       Profilescreen(),
     ];
@@ -62,6 +63,10 @@ class _BottomnavbarState extends State<Bottomnavbar> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<Likedproductprovider>(context, listen: false)
+          .getLikedProductList(widget.storeId.toString());
+    });
     return Scaffold(
       body: PageView(
         // duration: Duration(milliseconds: 500),
@@ -242,32 +247,48 @@ class CustomNavDestination extends StatelessWidget {
               ],
             ),
           ),
-          Consumer<Likedproductprovider>(
-            builder: (context, likedProvider, child) {
+          Consumer2<Likedproductprovider, CartProvider>(
+            builder: (context, likedProvider, cartProvider, child) {
               final likedlength = likedProvider.likedProductList ?? [];
-              if (likedlength.isNotEmpty) {
-                if (likedcount == cerindex) {
-                  return Positioned(
-                    right: isSelected ? 12 : 0,
-                    left: isSelected ? 0 : 25,
-                    bottom: isSelected ? 20 : 20,
-                    child: CircleAvatar(
-                      backgroundColor: Colors.red,
-                      radius: 8,
-                      child: Center(
-                        child: Text(
-                          '${likedlength.length}',
-                          style: TextStyle(color: Colors.white, fontSize: 9),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+              final cartLength = cartProvider.cartList ?? [];
+              if (likedlength.isNotEmpty && likedcount == 1) {
+                return Positioned(
+                  right: isSelected ? 12 : 0,
+                  left: isSelected ? 0 : 25,
+                  bottom: isSelected ? 20 : 20,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.red,
+                    radius: 8,
+                    child: Center(
+                      child: Text(
+                        '${likedlength.length}',
+                        style: TextStyle(color: Colors.white, fontSize: 9),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  );
-                } else {
-                  return SizedBox();
-                }
+                  ),
+                );
+              }
+
+              if (cartLength.isNotEmpty && likedcount == 2) {
+                return Positioned(
+                  right: isSelected ? 12 : 0,
+                  left: isSelected ? 0 : 25,
+                  bottom: isSelected ? 20 : 20,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.red,
+                    radius: 8,
+                    child: Center(
+                      child: Text(
+                        '${cartLength.length}',
+                        style: TextStyle(color: Colors.white, fontSize: 9),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                );
               } else {
-                return SizedBox();
+                return const SizedBox();
               }
             },
           )

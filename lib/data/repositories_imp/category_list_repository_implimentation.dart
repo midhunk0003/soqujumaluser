@@ -39,11 +39,16 @@ class CategoryListRepositoryImplimentation implements CategoryListRepositories {
         return Right(categoryResponseList);
       } else if (response.statusCode >= 400) {
         return Left(
-          ClientFailure('Client error ${response.statusCode}'),
+          ClientFailure(
+            'Client error ${response.statusCode}',
+          ),
         );
       } else {
         return Left(
-            OtherFailureNon200('Fail With Status ${response.statusCode}'));
+          OtherFailureNon200(
+            'Fail With Status ${response.statusCode}',
+          ),
+        );
       }
     } on SocketException {
       //Handle network related error

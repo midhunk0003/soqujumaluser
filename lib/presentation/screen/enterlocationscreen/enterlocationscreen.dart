@@ -348,14 +348,14 @@ class Enterlocationscreen extends StatelessWidget {
                               child: Container(
                                 height: isTablet ? 60 : 50,
                                 decoration: BoxDecoration(
-                                  color: postProvider.isLoading
+                                  color: postProvider.isLoadingButton == true
                                       ? Colors.grey
                                       : Colors.green,
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Center(
                                   child: Text(
-                                    postProvider.isLoading
+                                    postProvider.isLoadingButton == true
                                         ? "Loading..."
                                         : "Find Stores",
                                     style: TextStyle(

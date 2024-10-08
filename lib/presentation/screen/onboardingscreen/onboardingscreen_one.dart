@@ -1,6 +1,7 @@
 import 'package:customersouqjumla/presentation/provider/onboardprovider/onboardprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingscreenOne extends StatelessWidget {
   const OnboardingscreenOne({Key? key}) : super(key: key);
@@ -125,10 +126,14 @@ class OnboardingscreenOne extends StatelessWidget {
                             Align(
                               alignment: Alignment.centerRight,
                               child: GestureDetector(
-                                onTap: () {
+                                onTap: () async {
                                   if (onboardingProvider.currentIndex ==
                                       onboardingProvider.onboardingData.length -
                                           1) {
+                                    final prefs =
+                                        await SharedPreferences.getInstance();
+                                    prefs.setString('saved_onboard_key',
+                                        'saved_onboard_value');
                                     Navigator.pushNamedAndRemoveUntil(
                                       context,
                                       '/loginphonenumber',

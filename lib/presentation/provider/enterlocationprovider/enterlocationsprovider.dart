@@ -20,6 +20,7 @@ class Enterlocationsprovider extends ChangeNotifier {
   Enterlocationsprovider({required this.enterlocationRepositories});
 
   bool _isLoading = false;
+  bool _isLoadingButton = false;
   String? _errorMessage;
 
   ///***************************************** */
@@ -47,6 +48,7 @@ class Enterlocationsprovider extends ChangeNotifier {
   ///******************getter***************************////
 
   bool get isLoading => _isLoading;
+  bool get isLoadingButton => _isLoadingButton;
   String? get errorMesage => _errorMessage;
 
 // Country, Governorate, City models and lists
@@ -205,7 +207,7 @@ class Enterlocationsprovider extends ChangeNotifier {
 
   ///post profile data
   Future<void> postTheProfileFromLocation() async {
-    _isLoading = true;
+    _isLoadingButton = true;
     _errorMessage = null;
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
@@ -224,12 +226,12 @@ class Enterlocationsprovider extends ChangeNotifier {
     result.fold(
       (failure) {
         _errorMessage = failure.message;
-        _isLoading = false;
+        _isLoadingButton = false;
         notifyListeners();
       },
       (detilssuccess) {
         _details = detilssuccess;
-        _isLoading = false;
+        _isLoadingButton = false;
         notifyListeners();
       },
     );

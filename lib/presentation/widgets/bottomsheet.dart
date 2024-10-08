@@ -14,6 +14,7 @@ Future<void> showscrollingBottomsheet(
   productName,
   productPrice,
   productUnit,
+  messagefromscreen,
 ) async {
   print('index in bottom sheet :  $index');
   print('storeId in bottom sheet :  $storeId');
@@ -22,6 +23,7 @@ Future<void> showscrollingBottomsheet(
   print('productName in bottom sheet :  $productName');
   print('productPrice in bottom sheet :  $productPrice');
   print('productUnit in bottom sheet :  $productUnit');
+  print('messagefromscreen in bottom sheet :  $messagefromscreen');
   showModalBottomSheet(
     context: context,
     builder: (context) {
@@ -207,7 +209,7 @@ Future<void> showscrollingBottomsheet(
                           builder: (ctx, savetoCartbottomsheet, cartProvider,
                               child) {
                             return InkWell(
-                              onTap: () {
+                              onTap: () async {
                                 print("save to cart");
                                 final num calculatedquantity =
                                     savetoCartbottomsheet.calculatedAmount
@@ -224,13 +226,10 @@ Future<void> showscrollingBottomsheet(
                                   productId,
                                   selectedkg.toInt(),
                                   context,
+                                  messagefromscreen,
                                 );
-                                if (cartProvider.isLoading == true) {
-                                  print("loading");
-                                  Navigator.pop(context);
-                                } else {
-                                  Navigator.pop(context);
-                                }
+
+                                // Navigator.pop(context);
                               },
                               child: Container(
                                 height: 50,
@@ -240,13 +239,18 @@ Future<void> showscrollingBottomsheet(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 child: Center(
-                                  child: Text(
-                                    "Add To Bag",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white),
-                                  ),
+                                  child: cartProvider.isLoading == false
+                                      ? Text(
+                                          "Add To Bag",
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                          ),
+                                        )
+                                      : CircularProgressIndicator(
+                                          color: Colors.white,
+                                        ),
                                 ),
                               ),
                             );

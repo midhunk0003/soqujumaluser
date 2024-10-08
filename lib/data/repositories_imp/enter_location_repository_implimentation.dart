@@ -28,11 +28,16 @@ class EnterLocationRepositoryImplimentation extends EnterlocationRepositories {
         },
       );
 
-      print("country repo impl response : ${response.body}");
+      print(
+        "country repo impl response : ${response.body}",
+      );
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body)['Country'];
-        final dataresponse =
-            data.map((item) => Country.fromJson(item)).toList();
+        final dataresponse = data
+            .map(
+              (item) => Country.fromJson(item),
+            )
+            .toList();
         return Right(dataresponse);
       } else if (response.statusCode >= 500) {
         return Left(LoginFailure('Failed with status: ${response.statusCode}'));

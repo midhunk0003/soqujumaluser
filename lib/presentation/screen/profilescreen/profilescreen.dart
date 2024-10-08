@@ -103,17 +103,23 @@ class Profilescreen extends StatelessWidget {
                       const SizedBox(
                         height: 40,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          // color: Colors.black,
-                          border: Border.all(width: 0.6, color: Colors.grey),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: ListTile(
-                          leading: Text("Delete Account"),
-                          trailing: Icon(
-                            Icons.arrow_forward_ios,
-                            color: Colors.green,
+                      InkWell(
+                        onTap: () {
+                          print("delete account");
+                          Navigator.pushNamed(context, '/deleteaccount');
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            // color: Colors.black,
+                            border: Border.all(width: 0.6, color: Colors.grey),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ListTile(
+                            leading: Text("Delete Account"),
+                            trailing: Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.green,
+                            ),
                           ),
                         ),
                       ),
